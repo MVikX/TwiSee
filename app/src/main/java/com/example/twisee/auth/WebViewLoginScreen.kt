@@ -14,31 +14,32 @@ fun WebViewLoginScreen(
     viewModel: AuthViewModel
 ) {
     val context = LocalContext.current
-    val twichAuthUrl = viewModel.getTwhichAuthUrl()
+    val twitchAuthUrl = viewModel.getTwitchAuthUrl() // URL для авторизации
 
-    //открытие URL в браузере
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(twichAuthUrl))
+    // URL в браузере для входа
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(twitchAuthUrl))
     context.startActivity(intent)
 
-    //получение URI, извлечение токена
-    val redirectUri = getRedirectUri(context) //получение URI
+    // редирект после успешного входа
+    val redirectUri = getRedirectUri(context)
 
-    //проверка редиректа, извлечение токена
+    // токен из URL
     if (redirectUri != null) {
         val token = extractToken(redirectUri)
         if (token != null) {
-            viewModel.saveToken(token)
-            onTokenReceived(token)
+            viewModel.saveToken(token) // Сохраняем токен
+            onTokenReceived(token) // Передаем токен в приложение
         }
     }
 }
 
-fun getRedirectUri(context: Context) : Uri? {
-    //получение uri
+// URI редиректа (если браузер вернул ответ)
+fun getRedirectUri(context: Context): Uri? {
     return (context as? Activity)?.intent?.data
 }
 
-fun extractToken(uri: Uri) : String? {
+// access_token из URL после авторизации
+fun extractToken(uri: Uri): String? {
     return uri.fragment?.split("&")
         ?.find { it.startsWith("access_token=") }
         ?.substringAfter("=")
