@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.twisee"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.twisee"
@@ -52,6 +52,11 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation("androidx.browser:browser:1.5.0")
+    implementation(libs.androidx.media3.common.ktx)
     kapt(libs.hilt.compiler)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
