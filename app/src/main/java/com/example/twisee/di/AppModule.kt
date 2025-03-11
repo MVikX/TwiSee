@@ -16,12 +16,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    // provide user preferences (DataStore)
     @Provides
     @Singleton
     fun provideUserPreferences(@ApplicationContext context: Context): UserPreferences {
         return UserPreferences(context)
     }
 
+    // provide Twitch API service
     @Provides
     @Singleton
     fun provideTwitchApi(): TwitchApi {
@@ -32,6 +34,7 @@ object AppModule {
             .create(TwitchApi::class.java)
     }
 
+    // provide Twitch authentication API service
     @Provides
     @Singleton
     fun provideTwitchAuthApi(): TwitchAuthApi {
@@ -42,13 +45,23 @@ object AppModule {
             .create(TwitchAuthApi::class.java)
     }
 
+    // provide repository for authentication
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        authApi: TwitchAuthApi,
+        userPreferences: UserPreferences
+    ): AuthRepository {
+        return AuthRepository(authApi, userPreferences)
+    }
+
+    // provide repository for Twitch streams
     @Provides
     @Singleton
     fun provideTwitchRepository(
         api: TwitchApi,
-        authApi: TwitchAuthApi,
-        userPreferences: UserPreferences
+        authRepository: AuthRepository
     ): TwitchRepository {
-        return TwitchRepository(api, authApi, userPreferences)
+        return TwitchRepository(api, authRepository)
     }
 }
