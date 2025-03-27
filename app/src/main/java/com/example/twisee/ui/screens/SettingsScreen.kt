@@ -10,7 +10,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.twisee.ui.viewmodel.ThemeViewModel
 
 @Composable
-fun SettingsScreen(themeViewModel: ThemeViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    themeViewModel: ThemeViewModel = hiltViewModel(),
+) {
     val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
 
     Box(
@@ -20,6 +22,7 @@ fun SettingsScreen(themeViewModel: ThemeViewModel = hiltViewModel()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text("Тёмная тема", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(8.dp))
+            // theme toggle
             Switch(
                 checked = isDarkTheme,
                 onCheckedChange = { themeViewModel.toggleTheme() }

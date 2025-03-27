@@ -14,13 +14,25 @@ import com.example.twisee.ui.components.StreamItem
 @Composable
 fun TopStreamsScreen(
     streamViewModel: StreamViewModel,
+    shouldScrollToTop: Boolean,
+    onScrollHandled: () -> Unit,
 ) {
+    // state from ViewModel
     val streams by streamViewModel.streams.collectAsState()
     val isLoadingFirstPage by streamViewModel.isLoadingFirstPage.collectAsState()
     val isLoadingMore by streamViewModel.isLoadingMore.collectAsState()
 
     val listState = rememberLazyListState()
 
+    // scroll to top
+    LaunchedEffect (shouldScrollToTop) {
+        if (shouldScrollToTop) {
+            listState.animateScrollToItem(0)
+            onScrollHandled()
+        }
+    }
+
+    // initial fetch
     LaunchedEffect(Unit) {
         streamViewModel.fetchTopStreams()
     }
@@ -34,6 +46,7 @@ fun TopStreamsScreen(
         when {
             isLoadingFirstPage -> CircularProgressIndicator()
             streams.isEmpty() -> Text("Нет стримов")
+            // show stream list
             else -> LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize()
@@ -41,11 +54,13 @@ fun TopStreamsScreen(
                 itemsIndexed(streams) { index, stream ->
                     StreamItem(stream)
 
+                    // next page when near end
                     if (index == streams.size - 3 && !isLoadingMore) {
                         streamViewModel.loadMoreStreams()
                     }
                 }
 
+                // loading indicator
                 if (isLoadingMore) {
                     item {
                         Box(
