@@ -17,9 +17,9 @@ When creating an OAuth app, set the redirect URI to:
 
 After receiving your keys, add them to your `local.properties` file in the root directory:
 ```
-TWITCH_CLIENT_ID = your_client_id.
-TWITCH_CLIENT_SECRET = your_client_secret.
-TWITCH_REDIRECT_URI = twisee://open.
+TWITCH_CLIENT_ID = your_client_id
+TWITCH_CLIENT_SECRET = your_client_secret
+TWITCH_REDIRECT_URI = twisee://open
 ```
 
 ---
