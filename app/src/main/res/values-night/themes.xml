@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.TwiSee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary_light</item>
-        <item name="android:statusBarColor">@color/primary_light</item>
+        <item name="colorPrimary">@color/primary_dark</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/black</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
     </style>

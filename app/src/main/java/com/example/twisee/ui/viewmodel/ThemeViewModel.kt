@@ -2,18 +2,25 @@ package com.example.twisee.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.twisee.data.preferences.UserPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThemeViewModel: ViewModel() {
-    private val _isDarkTheme = MutableStateFlow(false)
-    val isDarkTheme : StateFlow<Boolean> = _isDarkTheme
+@HiltViewModel
+class ThemeViewModel @Inject constructor(
+    private val userPrefs: UserPreferences
+):ViewModel(){
+
+    val isDarkTheme = userPrefs.isDarkTheme
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
 
     fun toggleTheme() {
         viewModelScope.launch {
-            _isDarkTheme.value = !_isDarkTheme.value
+            userPrefs.setDarkTheme(!isDarkTheme.value)
         }
     }
 }
